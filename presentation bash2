@@ -1,0 +1,63 @@
+bash_profile vs bashrc
+
+bashrc:
+	PS1
+	alias
+	dircolor / LS_COLORS ???
+
+variable d'environnement
+
+commande bash:
+	simple:
+		ls  => 1, l, a/A, R, h(human readable)
+		cd => relative vs absolute path
+		pwd => print working directory
+		passwd => modify password
+		rm
+		cp
+		mv
+		mkdir
+		rmdir
+		sudo
+		history
+		jobs
+		fg
+		cat
+		more / less
+		tail / head
+		man
+		touch
+		chmod
+		echo
+		sort
+		wc
+		which
+		pushd / popd / dirs => stack de directory
+
+	complexe:
+		grep
+		sed
+		tr
+		awk
+		cmp / diff
+		xargs
+		find
+
+redirection:
+	>
+	2>
+	&>
+	here-document ("<<")
+	| (pipe)
+
+bash scripting:
+	shebang
+	variable
+	if then else fi
+	for while
+
+
+à faire:
+	présentation PP
+	bash cheat sheet
+	depot git avec exo?
