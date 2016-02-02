@@ -1,2 +1,2 @@
 # bashTutorial
-bash tutorial for Clibre AESS UQÀm
+bash tutorial for Clibre AESS UQÀM
