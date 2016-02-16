@@ -46,6 +46,7 @@ commande bash:
 
 redirection:
 	>
+	>>
 	2>
 	&>
 	here-document ("<<")
