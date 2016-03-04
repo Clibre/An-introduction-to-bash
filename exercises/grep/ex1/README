@@ -3,5 +3,5 @@ Print every dates that are in DD/MM/YYYY format from the
 file input.txt to a file named output.txt (use the redirection ">")
 
 ## Protip: ##
-Use the -o option so only the piece of the line that match the
+Use the -o option so only the piece of the line that matches the
 pattern is output

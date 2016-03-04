@@ -1,0 +1,12 @@
+## Exercise 1 ##
+The file input.txt is a bash script. Unfortunately the function
+"error" has ben declared with a spelling mistake. The programmer
+wrote "eror" and repeated the error each time he called the function.
+You have to fix his error with a simple sed command. Send a correct
+version of the bash script in a file named output.txt (use redirection ">").
+
+## Protip: ##
+Don't forget to use the "g" option in your sed script so the change is
+"global". 
+Make sure you don't change words that are not a eror function
+call or declaration (such as the word "emperor", for example)

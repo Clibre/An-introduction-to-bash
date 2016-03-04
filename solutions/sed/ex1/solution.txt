@@ -1,0 +1,1 @@
+sed "s/ eror / error /g" input.txt > output.txt
