@@ -1,0 +1,8 @@
+## Exercise 3 ##
+Print every word that has at least two consecutive consonant letter in  
+the file input.txt to a file named output.txt (use the redirection ">")
+ 
+## Protip: ##
+Use -i option to ignore case. Use a negated character class ([^...]) to exclude vowels.
+Backreferences (\(...\))will be useful here...
+

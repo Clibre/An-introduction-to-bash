@@ -1,0 +1,1 @@
+grep -io "[a-z]*\([^aeiouy]\)\1[a-z]*" input.txt > output.txt
