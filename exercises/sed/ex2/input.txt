@@ -1,0 +1,28 @@
+#!/bin/bash
+
+function eror {
+    echo "Error: $1"
+    exit
+}
+
+function how_to_eat_a_poptart {
+	cat <<EOF
+    This is the protocol that should be used to eat a poptart
+
+    1. Grab a poptart.
+    2. Carefully undress it as if it was your loved one.
+    3. Put that motherf*cker in the microwave for 20 seconds
+    4. Eat the shit out of that poptart
+    5. Enjoy.
+EOF
+}
+
+echo "This script has three purposes."
+echo "The first one is to learn about here documents"
+echo "In this script, the here document start with cat <<EOF"
+echo "The second pupose is use the sed command to retrieve that said here document"
+echo "And the third, but not the least purpose of this script is to learn how to eat a poptart"
+echo "Oh! and by the way, the here document will end with \
+EOF   "
+
+how_to_eat_a_poptart

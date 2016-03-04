@@ -1,0 +1,28 @@
+## Exercise 2 ##
+A "here document" is a kind of input redirection.
+
+Syntax:
+command <<AnyStringToDelimitTheInput
+write anything you want
+on any number of line you want
+AnyStringToDelimitTheInput
+
+Basically, every line inside the first AnyStringToDelimitTheInput and the second
+one will be used as an input.
+
+For the second exercise, you'll have to print the here document in the input.txt
+file. The here document will have this form:
+
+    cat <<EOF
+...
+...
+...
+EOF
+
+Use a simple sed command to print the here document in a file named
+output.txt (use the redirection ">")
+
+## Protip: ##
+Use the /pattern1/,/patter2/p functionality.
+Don't forget to use the -n option, otherwise every line of the file will be printed.
+Make sure your editor doesn't insert spaces instead of tabs.

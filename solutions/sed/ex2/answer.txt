@@ -1,0 +1,9 @@
+	cat <<EOF
+    This is the protocol that should be used to eat a poptart
+
+    1. Grab a poptart.
+    2. Carefully undress it as if it was your loved one.
+    3. Put that motherf*cker in the microwave for 20 seconds
+    4. Eat the shit out of that poptart
+    5. Enjoy.
+EOF
