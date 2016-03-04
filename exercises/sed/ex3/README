@@ -1,0 +1,9 @@
+## Exercise 3 ##
+Remember the text about whitespace characters in exercises/grep/ex2/input.txt?
+On some line of that text there was whitespace characters at the end.
+You'll have to create a new version of this text without whitespace
+characters at the end of each line with a single sed command. Redirect
+the output in a file name output.txt (use redirection ">").
+
+## Protip: ##
+The only whitespace characters contained in the test is spaces and tabs.
