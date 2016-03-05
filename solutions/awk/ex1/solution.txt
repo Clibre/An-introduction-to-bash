@@ -1,0 +1,3 @@
+awk -F# '/^Banner Pilot#/ {print $4}' input.txt > output.txt
+or
+awk -F# '{if($1 == "Banner Pilot") print $4}' input.txt > output.txt

@@ -1,0 +1,19 @@
+## Exercise 1 ##
+In the file input.txt you will find a database containing
+many of my favorite songs. The database is under CSV format
+with the delimiter being "#".
+
+A record looks like this:
+Band Name#Album Name#Year of release#Song Name
+
+Retrieve every song made by the band "Banner Pilot" with a
+simple awk script and write the result in a file named
+output.txt (use redirections ">")
+
+## Protip: ##
+There's two ways to do it (ok, maybe there's more..): use a filter before
+your awk script (awk -Fc '/pattern/ {awk statement}') or use an if statement
+in your awk script. If you decide to go with a filter; Make sure the the regex
+you will use will only be matched by the first field of the record (the band name).
+Otherwise, every records who has a song or an album containing the word Banner Pilot in it
+will be processed.

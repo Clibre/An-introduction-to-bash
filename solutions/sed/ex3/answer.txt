@@ -1,0 +1,13 @@
+This text is about whitespace characters. What the hell is a
+whitespace character and why is it so racist? Maybe you think
+it's should be called a blackspace character. And you would be
+totally right, my friend. Indeed when your editor's background
+is black, a whitespace character becomes a blackspace character.
+So why don't we call it a greyspace character you will ask me?
+Wouldn't it be more politically correct? Of course it would, but
+it would also, in my opinion, be really dumb. So now that the second
+question is answered (why is it so racist), we will cover the first
+question. According to wikipedia, a whitespace character is a series of
+characters that represent horizontal or vertical space in typography.
+So basically, a whitespace characters is a character that is not visible
+when rendered but still occupy an aera on the page.
