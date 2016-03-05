@@ -1,0 +1,18 @@
+## Exercise 1 ##
+For the second awk exercise we will use the same CSV database
+that we used in the first exercise.
+
+With a simple awk command, retrieve every records in which
+the album name contains the band name. Redirect the output
+to a file named output.txt (use redirection ">").
+
+The output should formatted like this:
+
+BandName - AlbumName (YearOfRelease)
+
+## Protip: ##
+The "~" operator in awk is for pattern matching.
+ex: if(string ~ pattern) will be true if pattern2 is found
+    in string.
+For the format, use the printf command which uses c-like formatting.
+ex: printf "%s - %s (%s)\n", string1, string2, string3
