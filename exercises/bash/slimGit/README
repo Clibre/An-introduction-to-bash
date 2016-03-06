@@ -1,0 +1,201 @@
+This is the slimGit project. A slim, tiny, mini, micro, pocket-sized, liliputian
+version control system implemented in bash.
+
+In this project you will have to program a few basic functionality of a version
+control system such as commit, checkout, log and a few more. In the file slimGit.sh
+you will find a skeleton of the program.
+
+Here is a list of the functionalities you'll have to program:
+
+- init
+- commit
+- log
+- ohMaGodIFuckedUp
+- branch
+- checkout
+- merge
+
+
+slimGit repository structure
+
+projectDir/
+   -.tracker
+   -.slimGit/
+       -projectDir-commit1
+       -projectDir-commit2
+       -projectDir-commitN
+   -.slimGit-branchName/
+       -projectDir-commit1
+       -projectDir-commit2
+       -projectDir-commitN
+   -files...
+
+ProjectDir/ is the directory in which you want to use the version
+control system.
+
+files are files and directories that compose your project.
+
+The .tracker file will be a CSV style file:
+commitNumber%commitMessage%branchName%current
+The current field will appear only in one record. This
+field is only to know on which branch we are currently working.
+Typically, the current record will the the last commited of the
+branch.
+
+The .slimGit/projectDir-commitN will contains every file/directories
+that was in the projectDir directory at the moment of the commit
+(except for the .tracker file and the .slimGit directory).
+
+The .slimGit-branchName/ directories have the same structure as the
+slimGit/ directory. The .slimGit directory will be called the master
+branch.
+
+
+Description of the functionalities
+
+
+init
+
+This command accepts no option. It will create a file named .tracker
+and a directory named .slimGit. If there's already a file .tracker and
+a directory .slimGit that exist, the command does nothing except to tell
+the user that there's already a slimGit repository in the current directory.
+
+usage:
+./slimGit.sh init
+
+
+commit "commit message"
+
+SlimGit will look through .tracker and will do two things: it will
+detect on which branch we are currently working (with the current field)
+and it will get the latest commit number of that branch.
+
+SlimGit will then create under the appropriate .slimGit/ directory a
+directory named projectDir-commitN with N being the number fetched in
+the first operation plus one.
+
+SlimGit will then copy every file and directory of projectDir (except
+for .track and all the .slimGit/ directories) under the .slimGit/
+directory it just created.
+
+The last thing slimGit will do is to edit the .tracker file. It will
+remove the current field from the current record and it will add a
+new record according to the .tracker file format and this new record
+will now be the current one.
+
+The message option is mandatory. If no value or an empty value is passed
+an error message will be displayed and nohting will append.
+
+Of course, slimGit will have to verify the existence of .tracker file and
+at least one .slimGit/ directory. If there's none, an error message will
+be displayed and nothing will append.
+
+usage:
+./slimGit.sh commit "initial commit"
+
+
+log
+
+SlimGit will, in reverse order of commit number, output every commit of the current
+branch (the branch we're working on) and the commit message associated wih it.
+
+If there's no .tracker file or no .slimGit/ directory, an error message will
+be printed and nothing happen.
+
+The log command accept no option. An error message will be displayed if
+option are specified at the call of the command and nothing happen.
+
+usage: 
+./slimGit.sh log
+
+
+ohMaGodIFuckedUp commitNumber
+
+SlimGit makes sure that there's a .tracker file and at least one .slimGit/
+directory. If they don't exist, slimGit output an error message.
+
+SlimGit makes sure that there's is a commit that has the commitNumber passed
+as the first argument of the command in the current branch. If no commit has
+this commitNumber, an error is displayed and nothing happen.
+
+SlimGit erase every files and directories of the projectDir directory (except for
+the .tracker file and .slimGit/ directories). Note: all progress in the current
+directory will be lost unless a commit has been done prior to the ohMaGodIFuckedUp
+command.
+
+SlimGit then copy every files from the appropriate .slimGit/projectDir-commitN
+directory in the projectDir directory.
+
+The last step is to move the current flag in the .tracker file.
+
+usage:
+./slimGit.sh ohMaGodIFuckedUp 32
+
+
+branch branchName
+
+SlimGit makes sure that there's a .tracker file and at least one .slimGit/
+directory. If they don't exist, slimGit output an error message.
+
+SlimGit creates a .slimGit-branchName/ directory under projectDir and copy every
+files and directories (except .tracker and all the .slimGit/ directory) into the
+newly created directory. If there's already a .slimGit-branchName/ an error message
+is displayed and the branch is aborted.
+
+The last step is to add a record in the .tracker file. The current flag stay
+where it is since we haven't checked out the branch.
+
+usage:
+./slimGit.sh branch hotfix23
+
+
+checkout branchName
+
+SlimGit makes sure that there's a .tracker file and at least one .slimGit/
+directory. If they don't exist, slimGit output an error message.
+
+SlimGit makes sure that there's a .slimGit-branchName/ directory. If 
+.slimGit-branchName/ directory doesn't exist, an error message is displayed
+and the checkout is aborted
+
+SlimGit will clear the projectDir/ directory (delete every files and 
+directories except for the .tracker file and all the .slimGit/ directories).
+
+SlimGit will then copy every files and directories in the .slimGit-branchName/projectDir-commitN
+(where porjectDir-commitN is the latest commmit of that branch) directory 
+in the projectDir/ directory.
+
+The last step is to update the .tracker file and to put the current flag
+on the right record. 
+
+usage:
+./slimGit.sh checkout hotfix23
+
+
+merge branchName
+
+SlimGit makes sure that there's a .tracker file and at least one .slimGit/
+directory. If they don't exist, slimGit output an error message.
+
+SlimGit makes sure that there's a .slimGit-branchName/ directory. If 
+.slimGit-branchName/ directory doesn't exist, an error message is displayed
+and the merge is aborted. SlimGit must also makes sure that the current
+branch isnt branchName. If this is the case, an error message is displayed
+and the merge is aborted.
+
+SlimGit clears the projectDir/ directory except for the .tracker file
+and the .slimGit/ directories.
+
+SlimGet then copy the content of the .slimGit-branchName/projectDir-commitN
+(where N is the latest commit of the branch) in the projectDir/ directory.
+
+SlimGet retrieve the latest commitNumber i of the current branch and create
+a new directory under .slimGit-currentBranch/projectDir-commiti+1/. A new 
+record in the .tracker file must be created. 
+
+SlimGit then delete recursively the .slimGit-branchName/ directory.
+
+The last step is to update the .tracker file. SlimGit deletes every records
+of branchName. The current flag is moved to the newly created record from the
+previous step.
