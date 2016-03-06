@@ -1,0 +1,24 @@
+## Exercise 3 ##
+For the third exercise, we'll use the music database once again
+but this time, there will be 2 more fields for each records: the genre
+and if the song contains explicit content or not.
+
+example of a record:
+BandName#AlbumName#YearOfRelease#SongName#Genre#Explicit
+
+If the song doesn't contain explicit content, the sixth field will be empty:
+BandName#AlbumName#YearOfRelease#SongName#Genre
+
+With a simple awk command, write every records under the format:
+SongName from AlbumName, BandName «WARNING EXPLICIT CONTENT»
+The warning is present only if there is six fields in the record.
+In the output file, we do not want to have the records from the band
+The Story So Far.
+Redirect the output in a file named output.txt (use the redirection ">").
+
+## Protip: ##
+Use the NF (number of fields) buitl-in variable to know wheter or not there
+is explicit content in the song.
+Negate the filter with "!" operator: awk -F# '!/pattern/ {awk script}'
+If you want to ignore the case in your filter, use Begin {IGNORECASE = 1}
+before the filter.

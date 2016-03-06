@@ -1,0 +1,4 @@
+awk -F# 'BEGIN {IGNORECASE=1} !/the story so far/ {if(NF == 6) printf "%s from %s, %s «WARNING EXPLICIT CONTENT»\n", $4, $2, $1; else printf "%s from %s, %s\n", $4, $2, $1;}' input.txt > output.txt
+
+
+# Yep I know, that's a fucking huge one-liner... it may be optimised though...
