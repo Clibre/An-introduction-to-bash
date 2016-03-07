@@ -33,13 +33,13 @@ projectDir/
 ProjectDir/ is the directory in which you want to use the version
 control system.
 
-files are files and directories that compose your project.
+Files are files and directories that compose your project.
 
 The .tracker file will be a CSV style file:
 commitNumber%commitMessage%branchName%current
 The current field will appear only in one record. This
 field is only to know on which branch we are currently working.
-Typically, the current record will the the last commited of the
+Usually, the current record will the the last commited of the
 branch.
 
 The .slimGit/projectDir-commitN will contains every file/directories
@@ -60,6 +60,8 @@ This command accepts no option. It will create a file named .tracker
 and a directory named .slimGit. If there's already a file .tracker and
 a directory .slimGit that exist, the command does nothing except to tell
 the user that there's already a slimGit repository in the current directory.
+It will automatically create the first commit of the repository and the commit
+message will be: "initial commit"
 
 usage:
 ./slimGit.sh init
