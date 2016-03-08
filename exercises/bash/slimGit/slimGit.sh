@@ -40,6 +40,7 @@ EOF
 }
 
 # Display a specific error message
+# and end the script
 function error {
     echo "Error: $1"
     exit
@@ -64,9 +65,23 @@ function cp_directory_to {
     dest=$2
     # loop through every files of the src directory
     # wihtout the .tracker, slimGit.sh and .slimGit-branchName/
-    for file in $(ls $src | sed -r '/^(\.tracker|(\.slimGit-[a-z]*|slimGit.sh))$/d'); do
+    for file in $(ls -A $src | sed -r '/^(\.tracker|(\.slimGit-[a-z]*|slimGit.sh))$/d'); do
         # copy recursively every file / directories
         cp -r $src/$file $dest/$file
+    done
+    
+    # delete the vim .swp files
+    rm -rf $dest/.*.*.swp
+}
+
+# Remove the content of the dir $1
+function rm_dir_content {
+    dir=$1
+    # loop through every files of the src directory
+    # wihtout the .tracker, slimGit.sh and .slimGit-branchName/
+    for file in $(ls -A $src | sed -r '/^(\.tracker|(\.slimGit-[a-z]*|slimGit.sh))$/d'); do
+        # delete recursively every file / directories
+        rm -rf $dir/$file
     done
 }
 
@@ -74,7 +89,7 @@ function cp_directory_to {
 
 function init {
     # Check that the number of args is OK.
-    [[ $# -eq 0 ]] || (error "The init option takes 0 arg." && usage)
+    [[ $# -eq 0 ]] || usage
 
     # Make sure there's not already a slimGit repository.
     [[ -f ".tracker" ]] && error "There's already a slimGit repository in this directory"
@@ -92,12 +107,12 @@ function commit {
     validate_structure 
 
     # Check that the number of args is OK.
-    [[ $# -eq 1 ]] || (echo "The commit command takes one arg: the commit message." && usage)
+    [[ $# -eq 1 ]] || usage
 
     commit_message=$1
 
     # Check that the commit message isn't empty
-    [[ $commit_message ]] || echo "The commit message must not be empty."
+    [[ $commit_message ]] || error "The commit message must not be empty."
 
     # Look for the current branch
     branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
@@ -132,7 +147,7 @@ function log {
     validate_structure 
 
     # Check that the number of args is OK.
-    [[ $# -eq 0 ]] || (echo "The log command takes 0  arg." && usage)
+    [[ $# -eq 0 ]] || usage
 
     # look for the current branch
     branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
@@ -143,8 +158,29 @@ function log {
 }
 
 function ohMaGodIFuckedUp {
-    echo "This is an ohMaGodIFuckedUp!"
     validate_structure 
+
+    # Check that the number of args is OK.
+    [[ $# -eq 1 ]] || usage
+
+    commit_number=$1
+
+    # look for the current branch
+    branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
+
+    # make sure that the commit number exists.
+    grep -Eq "^$commit_number%[^%]*%$branch%?" $tracker_file
+    [[ $? -eq 0 ]] || error "The commit #$commit_number doesn't exist on branch $branch"
+
+    rm_dir_content "."
+
+    # copy the content of the commit directory
+    commit_dir=.slimGit-$branch/commit$commit_number
+    cp_directory_to $commit_dir "."
+
+    # change the current flag
+    delete_current_flag
+    sed -i "s/^$commit_number%\([^%]*\)%$branch/$commit_number%\1%$branch%current/" $tracker_file
 }
 
 function branch {
@@ -185,7 +221,7 @@ case $com in
         log "$@"
         ;;
     ohMaGodIFuckedUp)
-        ohMaGodIFuckedUp
+        ohMaGodIFuckedUp "$@"
         ;;
     branch)
         branch
