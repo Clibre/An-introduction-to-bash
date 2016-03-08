@@ -1,4 +1,6 @@
 #!/bin/bash
 
-rm -rf .slimGit
+rm -rf .slimGit-master
 rm .tracker
+
+echo "repository cleaned"
