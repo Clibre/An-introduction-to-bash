@@ -207,17 +207,84 @@ function branch {
 }
 
 function checkout {
-    echo "This is a checkout!"
     validate_structure 
+
+    # Check that the number of args is OK.
+    [[ $# -eq 1 ]] || usage
+
+    branch_name=$1
+
+    # make sure that the branch exist
+    [[ -d .slimGit-$branch_name ]] || error "The branch $branch_name doesn't exists"
+
+    rm_dir_content "."
+
+    # get the latest commit of the branch to checkout to
+    latest_commit=$(awk -F% "/^[^%]*%[^%]*%$branch_name%?/ {print \$1}" $tracker_file |
+        sort -rn |
+        head --lines=1)
+
+    rm_dir_content "."
+
+    cp_directory_to ".slimGit-$branch_name/commit$latest_commit" "."
+
+    delete_current_flag
+
+    sed -i "s/^$latest_commit%\([^%]*\)%$branch_name/$latest_commit%\1%$branch_name%current/" $tracker_file
 }
 
 function merge {
-    echo "This is a merge!"
     validate_structure 
+
+    # Check that the number of args is OK.
+    [[ $# -eq 1 ]] || usage
+
+    branch_name=$1
+
+    # make sure that the branch to be merged is not
+    # the master branch
+    [[ $branch_name != "master" ]] || error "You can't merge the master branch"
+
+    # make sure that the branch to be merged exists
+    [[ -d .slimGit-$branch_name ]] || error "The branch $branch_name doesn't exist"
+
+    # look for the current branch
+    current_branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
+
+    # make sure that the current branch is not the branch
+    # we want to merge
+    [[ $current_branch != $branch_name ]] || error "You can't merge the branch $branch_name with the branch $current_branch"
+
+    # get the latest commit of the branch we want to merge
+    latest_commit=$(awk -F% "/^[^%]*%[^%]*%$branch_name%?/ {print \$1}" $tracker_file |
+        sort -rn |
+        head --lines=1)
+
+    rm_dir_content "."
+
+    cp_directory_to ".slimGit-$branch_name/commit$latest_commit" "."
+
+    commit "merge of branch $branch_name to $current_branch"
+
+    # delete recursively the directory of the branch
+    # that have been merged
+    rm -rf .slimGit-$branch_name
+
+    # delete every record of the branch that
+    # have been merged
+    sed -i "/^[^%]*%[^%]*%$branch_name/d" $tracker_file
 }
 
+function clean {
+    validate_structure
 
+    # Check that the number of args is OK.
+    [[ $# -eq 0 ]] || usage
 
+    # delete everything slimGit related...
+    rm -rf .slimGit-*
+    rm -rf .tracker
+}
 
 ## Program entry point
 
@@ -245,10 +312,13 @@ case $com in
         branch "$@"
         ;;
     checkout)
-        checkout
+        checkout "$@"
         ;;
     merge)
-        merge
+        merge "$@"
+        ;;
+    clean)
+        clean "$@"
         ;;
     *)
         usage

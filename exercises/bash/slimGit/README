@@ -14,6 +14,7 @@ Here is a list of the functionalities you'll have to program:
 - branch
 - checkout
 - merge
+- clean
 
 
 slimGit repository structure
@@ -208,3 +209,14 @@ SlimGit then deletes recursively the .slimGit-branchName/ directory.
 The last step is to update the .tracker file. SlimGit deletes every records
 of branchName. The current flag is moved to the newly created record from the
 previous step.
+
+
+clean
+
+SlimGit deletes the .tracker file and all the .slimGit-branchName
+directories. The command takes no args, otherwise an error message is
+displayed. If there's .tracker or .slimGit-branchName directories
+an error message is displayed.
+
+usage:
+./slimGit.sh clean
