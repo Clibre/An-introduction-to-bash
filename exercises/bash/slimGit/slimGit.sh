@@ -65,13 +65,14 @@ function cp_directory_to {
     dest=$2
     # loop through every files of the src directory
     # wihtout the .tracker, slimGit.sh and .slimGit-branchName/
-    for file in $(ls -A $src | sed -r '/^(\.tracker|(\.slimGit-[a-z]*|slimGit.sh))$/d'); do
+    for file in $(ls -A $src | sed -r '/^(\.tracker|(\.slimGit-[-_a-zA-Z0-9]*|slimGit.sh))$/d'); do
         # copy recursively every file / directories
         cp -r $src/$file $dest/$file
     done
     
     # delete the vim .swp files
     rm -rf $dest/.*.*.swp
+    rm -rf $dest/.*.swp
 }
 
 # Remove the content of the dir $1
@@ -79,7 +80,7 @@ function rm_dir_content {
     dir=$1
     # loop through every files of the src directory
     # wihtout the .tracker, slimGit.sh and .slimGit-branchName/
-    for file in $(ls -A $src | sed -r '/^(\.tracker|(\.slimGit-[a-z]*|slimGit.sh))$/d'); do
+    for file in $(ls -A $src | sed -r '/^(\.tracker|(\.slimGit-[-_a-zA-Z0-9]*|slimGit.sh))$/d'); do
         # delete recursively every file / directories
         rm -rf $dir/$file
     done
@@ -184,8 +185,25 @@ function ohMaGodIFuckedUp {
 }
 
 function branch {
-    echo "This is a branch!"
     validate_structure 
+
+    # Check that the number of args is OK.
+    [[ $# -eq 1 ]] || usage
+
+    branch_name=$1
+
+    # make sure that the branch doesn't already exist
+    [[ -d .slimGit-$branch_name ]] && error "The branch $branch_name already exists"
+
+    # create the directories..
+    mkdir .slimGit-$branch_name
+    commit_dir=.slimGit-$branch_name/commit1
+    mkdir $commit_dir
+
+    cp_directory_to "." $commit_dir
+
+    # add a record in the .tracker file
+    echo "1%start of branch $branch_name%$branch_name" >> $tracker_file
 }
 
 function checkout {
@@ -224,7 +242,7 @@ case $com in
         ohMaGodIFuckedUp "$@"
         ;;
     branch)
-        branch
+        branch "$@"
         ;;
     checkout)
         checkout

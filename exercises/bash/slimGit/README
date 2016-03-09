@@ -139,10 +139,14 @@ branch branchName
 SlimGit makes sure that there's a .tracker file and a .slimGit-master/
 directory. If they don't exist, slimGit outputs an error message.
 
-SlimGit creates a .slimGit-branchName/ directory under projectDir and copy every
-files and directories (except .tracker and all the .slimGit/ directory) into the
-newly created directory. If there's already a .slimGit-branchName/ an error message
-is displayed and the branch is aborted.
+SlimGit creates a .slimGit-branchName/ directory under projectDir.
+If there's already a .slimGit-branchName/ an error message
+is displayed and the branch is aborted. The branch command will automatically
+create the first commit of the branch. Hence, a directory commit1 will be
+created under .slimGit-branchName/ and the content of projectDir will be
+copied in that directory (except for the .tracker file, the slimGit.sh file
+and the .slimGit-branchName/ directories). The commit message is: start of
+branch branchName.
 
 The last step is to add a record in the .tracker file. The current flag stays
 where it is since we haven't checked out the branch.
