@@ -2,6 +2,10 @@
 
 # Some global variables...
 tracker_file=.tracker
+branch_dir=.slimGit-
+commit_dir=commit
+commit_number=1
+current_branch=master
 
 # Display how to use the program.
 function usage {
@@ -43,14 +47,38 @@ EOF
 # and end the script
 function error {
     echo "Error: $1"
-    exit
+    exit 1
+}
+
+# Retrieve and put the latest commit number
+# for the branch in $1 in the variable commit_number
+function get_latest_commit {
+    branch=$1
+    commit_number=$(awk -F% "/^[^%]*%[^%]*%$branch%?/ {print \$1}" $tracker_file |
+        sort -rn |
+        head --lines=1)
+}
+
+# Retrieve and put the current branch name
+# in the variable current_branch
+function get_current_branch {
+    current_branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
 }
 
 # Check for the existence of the .tracker file and at least
 # one .slimGit/ directory. Exit the program if they dont exist.
 function validate_structure {
-    [[ -f ".tracker" ]] || error "There's no slimGit repository in this directory"
-    [[ -d ".slimGit-master" ]] || error "There's no slimGit repository in this directory"
+    [[ -f $tracker_file ]] || error "There's no slimGit repository in this directory"
+    [[ -d ${branch_dir}master ]] || error "There's no slimGit repository in this directory"
+}
+
+# move the current flag to the record of
+# commit $1 and branch $2
+function move_current_flag {
+    commit_number=$1
+    branch=$2
+    delete_current_flag
+    sed -i "s/^$commit_number%\([^%]*\)%$branch/$commit_number%\1%$branch%current/" $tracker_file
 }
 
 function delete_current_flag {
@@ -97,8 +125,8 @@ function init {
     [[ -d ".slimGit-master" ]] && error "There's already a slimGit repository in this directory"
 
     # create the structure of the slimGit repository.
-    touch .tracker
-    mkdir .slimGit-master
+    touch $tracker_file
+    mkdir ${branch_dir}master
 
     # doing the initial commit.
     commit "initial commit"
@@ -115,33 +143,29 @@ function commit {
     # Check that the commit message isn't empty
     [[ $commit_message ]] || error "The commit message must not be empty."
 
-    # Look for the current branch
-    branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
+    get_current_branch
 
     # if it's the initial commit, branch variable will be empty
     # and the commit number will have to be 1 on branch master.
-    if [[ -z $branch ]]; then
-        commit_number=1
-        branch=master
+    if [[ -z $current_branch ]]; then
+        current_branch=master
     else
         # look for the next commit number
-        commit_number=$(awk -F% "/^[^%]*%[^%]*%$branch%?/ {print \$1}" $tracker_file |
-            sort -rn |
-            head --lines=1)
+        get_latest_commit $current_branch
         (( commit_number=$commit_number + 1))
 
         delete_current_flag
     fi
 
     # add a record with the current flag
-    echo "$commit_number%$commit_message%$branch%current" >> $tracker_file
+    echo "$commit_number%$commit_message%$current_branch%current" >> $tracker_file
 
     # create the commit directory
-    commit_dir=.slimGit-$branch/commit$commit_number
-    mkdir $commit_dir
+    commit_path=${branch_dir}$current_branch/${commit_dir}$commit_number
+    mkdir $commit_path
 
     # copy the content of the directory
-    cp_directory_to "." $commit_dir
+    cp_directory_to "." $commit_path
 }
 
 function log {
@@ -150,12 +174,11 @@ function log {
     # Check that the number of args is OK.
     [[ $# -eq 0 ]] || usage
 
-    # look for the current branch
-    branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
+    get_current_branch
 
     # output every commit for the current branch
     format="commit #%s: %s\n\n"
-    awk -F% "/^[^%]*%[^%]*%$branch%?/ {printf \"$format\", \$1, \$2}" $tracker_file
+    awk -F% "/^[^%]*%[^%]*%$current_branch%?/ {printf \"$format\", \$1, \$2}" $tracker_file
 }
 
 function ohMaGodIFuckedUp {
@@ -166,22 +189,19 @@ function ohMaGodIFuckedUp {
 
     commit_number=$1
 
-    # look for the current branch
-    branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
+    get_current_branch
 
     # make sure that the commit number exists.
-    grep -Eq "^$commit_number%[^%]*%$branch%?" $tracker_file
-    [[ $? -eq 0 ]] || error "The commit #$commit_number doesn't exist on branch $branch"
+    grep -Eq "^$commit_number%[^%]*%$current_branch%?" $tracker_file
+    [[ $? -eq 0 ]] || error "The commit #$commit_number doesn't exist on branch $current_branch"
 
     rm_dir_content "."
 
     # copy the content of the commit directory
-    commit_dir=.slimGit-$branch/commit$commit_number
-    cp_directory_to $commit_dir "."
+    commit_path=${branch_dir}$current_branch/${commit_dir}$commit_number
+    cp_directory_to $commit_path "."
 
-    # change the current flag
-    delete_current_flag
-    sed -i "s/^$commit_number%\([^%]*\)%$branch/$commit_number%\1%$branch%current/" $tracker_file
+    move_current_flag $commit_number $current_branch
 }
 
 function branch {
@@ -193,14 +213,14 @@ function branch {
     branch_name=$1
 
     # make sure that the branch doesn't already exist
-    [[ -d .slimGit-$branch_name ]] && error "The branch $branch_name already exists"
+    [[ -d ${branch_dir}$branch_name ]] && error "The branch $branch_name already exists"
 
     # create the directories..
-    mkdir .slimGit-$branch_name
-    commit_dir=.slimGit-$branch_name/commit1
-    mkdir $commit_dir
+    mkdir ${branch_dir}$branch_name
+    commit_path=${branch_dir}$branch_name/${commit_dir}1
+    mkdir $commit_path
 
-    cp_directory_to "." $commit_dir
+    cp_directory_to "." $commit_path
 
     # add a record in the .tracker file
     echo "1%start of branch $branch_name%$branch_name" >> $tracker_file
@@ -215,22 +235,16 @@ function checkout {
     branch_name=$1
 
     # make sure that the branch exist
-    [[ -d .slimGit-$branch_name ]] || error "The branch $branch_name doesn't exists"
+    [[ -d ${branch_dir}$branch_name ]] || error "The branch $branch_name doesn't exists"
+
+    get_latest_commit $branch_name
 
     rm_dir_content "."
 
-    # get the latest commit of the branch to checkout to
-    latest_commit=$(awk -F% "/^[^%]*%[^%]*%$branch_name%?/ {print \$1}" $tracker_file |
-        sort -rn |
-        head --lines=1)
+    src_path=${branch_dir}$branch_name/${commit_dir}$commit_number
+    cp_directory_to $src_path "."
 
-    rm_dir_content "."
-
-    cp_directory_to ".slimGit-$branch_name/commit$latest_commit" "."
-
-    delete_current_flag
-
-    sed -i "s/^$latest_commit%\([^%]*\)%$branch_name/$latest_commit%\1%$branch_name%current/" $tracker_file
+    move_current_flag $commit_number $branch_name
 }
 
 function merge {
@@ -246,29 +260,26 @@ function merge {
     [[ $branch_name != "master" ]] || error "You can't merge the master branch"
 
     # make sure that the branch to be merged exists
-    [[ -d .slimGit-$branch_name ]] || error "The branch $branch_name doesn't exist"
+    [[ -d ${branch_dir}$branch_name ]] || error "The branch $branch_name doesn't exist"
 
-    # look for the current branch
-    current_branch=$(awk -F% '/current$/ {print $3}' $tracker_file)
+    get_current_branch
 
     # make sure that the current branch is not the branch
     # we want to merge
     [[ $current_branch != $branch_name ]] || error "You can't merge the branch $branch_name with the branch $current_branch"
 
-    # get the latest commit of the branch we want to merge
-    latest_commit=$(awk -F% "/^[^%]*%[^%]*%$branch_name%?/ {print \$1}" $tracker_file |
-        sort -rn |
-        head --lines=1)
+    get_latest_commit $branch_name
 
     rm_dir_content "."
 
-    cp_directory_to ".slimGit-$branch_name/commit$latest_commit" "."
+    src_path=${branch_dir}$branch_name/${commit_dir}$commit_number
+    cp_directory_to $src_path "."
 
     commit "merge of branch $branch_name to $current_branch"
 
     # delete recursively the directory of the branch
     # that have been merged
-    rm -rf .slimGit-$branch_name
+    rm -rf ${branch_dir}$branch_name
 
     # delete every record of the branch that
     # have been merged
@@ -282,8 +293,8 @@ function clean {
     [[ $# -eq 0 ]] || usage
 
     # delete everything slimGit related...
-    rm -rf .slimGit-*
-    rm -rf .tracker
+    rm -rf ${branch_dir}*
+    rm -rf $tracker_file
 }
 
 ## Program entry point

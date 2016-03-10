@@ -22,13 +22,13 @@ slimGit repository structure
 projectDir/
    -.tracker
    -.slimGit-master/
-       -commit1
-       -commit2
-       -commitN
+      -commit1
+      -commit2
+      -commitN
    -.slimGit-branchName/
-       -commit1
-       -commit2
-       -commitN
+      -commit1
+      -commit2
+      -commitN
    -files...
 
 ProjectDir/ is the directory in which you want to use the version
@@ -220,3 +220,4 @@ an error message is displayed.
 
 usage:
 ./slimGit.sh clean
+
