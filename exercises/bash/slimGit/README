@@ -1,9 +1,17 @@
 This is the slimGit project. A slim, tiny, mini, micro, pocket-sized, liliputian
 version control system implemented in bash.
 
-In this project you will have to program a few basic functionality of a version
+In this project you will have to program a few basic functionalities of a version
 control system such as commit, checkout, log and a few more. In the file slimGit.sh
 you will find a skeleton of the program.
+
+There's no restriction / limit in this project. The description below
+is just there as a guideline. The goal of this project is to improve
+your bash scripting skills. You will find under the solution directory
+my implementation of this program. There is more than one way to do it,
+so if your implementation doesn't look like mine IT'S OK!
+
+Have fun!
 
 Here is a list of the functionalities you'll have to program:
 
@@ -54,7 +62,7 @@ slimGit-master/ directory.
 Description of the functionalities
 
 
-init
+init : Initialise an empty slimGit repository
 
 This command accepts no option. It will create a file named .tracker
 and a directory named .slimGit-master/. If there's already a file .tracker and
@@ -67,7 +75,7 @@ usage:
 ./slimGit.sh init
 
 
-commit "commit message"
+commit "commit message" : Save a version of your project
 
 SlimGit will look through .tracker and will do two things: it will
 detect on which branch we are currently working (with the current field)
@@ -97,7 +105,7 @@ usage:
 ./slimGit.sh commit "initial commit"
 
 
-log
+log : Display the saved versions of your project
 
 SlimGit will, in reverse order of commit number, output every commit of the current
 branch (the branch we're working on) and the commit message associated wih it.
@@ -112,7 +120,7 @@ usage:
 ./slimGit.sh log
 
 
-ohMaGodIFuckedUp commitNumber
+ohMaGodIFuckedUp commitNumber : revert to an older version of your project
 
 SlimGit makes sure that there's a .tracker file and a .slimGit-master/ directory
 If they don't exist, slimGit outputs an error message.
@@ -135,7 +143,7 @@ usage:
 ./slimGit.sh ohMaGodIFuckedUp 32
 
 
-branch branchName
+branch branchName : Create a new branch for your porject
 
 SlimGit makes sure that there's a .tracker file and a .slimGit-master/
 directory. If they don't exist, slimGit outputs an error message.
@@ -156,7 +164,7 @@ usage:
 ./slimGit.sh branch hotfix23
 
 
-checkout branchName
+checkout branchName : Switch between branches
 
 SlimGit makes sure that there's a .tracker file and a .slimGit-master/
 directory. If they don't exist, slimGit outputs an error message.
@@ -180,7 +188,7 @@ usage:
 ./slimGit.sh checkout hotfix23
 
 
-merge branchName
+merge branchName : merge two branches together
 
 SlimGit makes sure that there's a .tracker file and a .slimGit-master/
 directory. If they don't exist, slimGit outputs an error message.
@@ -211,7 +219,7 @@ of branchName. The current flag is moved to the newly created record from the
 previous step.
 
 
-clean
+clean : Delete every files / directories used for the slimGit repository
 
 SlimGit deletes the .tracker file and all the .slimGit-branchName
 directories. The command takes no args, otherwise an error message is
@@ -220,4 +228,3 @@ an error message is displayed.
 
 usage:
 ./slimGit.sh clean
-
