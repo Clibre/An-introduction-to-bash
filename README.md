@@ -13,8 +13,11 @@ The presentation is divided in four distinct parts:
 
 ## What you will be after this presentation
 
+TODO: Write this
 
 ## What you will not be after this presentation
+
+TODO: Write that
 
 ## Just do it!
 
@@ -28,8 +31,8 @@ a problem and this is even more true with bash.
 
 ## Disclaimer
 
-Last but not least, when I built this presentation, I tried to include a bit of humour in it and I didn't mean to be
-offensive in any way.
+Last but not least, when I built this presentation, I tried to include a bit of humour in it and I just want to let you know
+that I didn't mean to be offensive in any way.
 
 
 ## Repository structure
