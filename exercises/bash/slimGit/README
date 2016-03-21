@@ -86,10 +86,10 @@ directory named commitN with N being the number fetched in
 the first operation plus one.
 
 SlimGit will then copy every file and directories of projectDir (except
-for .track and all the .slimGit-branchName/ directories, and the slimGit.sh file)
+for .tracker and all the .slimGit-branchName/ directories, and the slimGit.sh file)
 under the .slimGit-branch/commitN directory it just created.
 
-The last thing slimGit will do is to edit the .tracker file. It will
+The last thing slimGit will do is edit the .tracker file. It will
 remove the current field from the current record and it will add a
 new record according to the .tracker file format and this new record
 will now be the current one.
@@ -134,7 +134,7 @@ the .tracker file, the slimGit.sh file and .slimGit-branchName/ directories).
 Note: all progress in the current directory will be lost unless a commit 
 has been done prior to the ohMaGodIFuckedUp command.
 
-SlimGit then copy every files from the appropriate .slimGit/commitN
+SlimGit then copy every files from the appropriate .slimGit-branchName/commitN
 directory in the projectDir directory.
 
 The last step is to move the current flag in the .tracker file.
@@ -193,7 +193,7 @@ merge branchName : merge two branches together
 SlimGit makes sure that there's a .tracker file and a .slimGit-master/
 directory. If they don't exist, slimGit outputs an error message.
 
-SlimGit will not allow the master branch to be merge (master can't be passed
+SlimGit will not allow the master branch to be merged (master can't be passed
 as the argument of the command merge).
 
 SlimGit makes sure that there's a .slimGit-branchName/ directory. If 

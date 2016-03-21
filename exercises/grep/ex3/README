@@ -1,5 +1,5 @@
 ## Exercise 3 ##
-Print every word that has at least two consecutive consonant letter in  
+Print every words that has at least two consecutive consonant letter in  
 the file input.txt to a file named output.txt (use the redirection ">")
  
 ## Protip: ##
