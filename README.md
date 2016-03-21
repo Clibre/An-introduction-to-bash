@@ -13,11 +13,14 @@ The presentation is divided in four distinct parts:
 
 ## What you will be after this presentation
 
-TODO: Write this
+After this presentation, you will be able to use bash for simple tasks such as copying, moving or deleting files, creating
+and deleting directories, moving in you file system, etc. You will be able to manipulate text with complex commands like grep,
+sed and awk. You will be able to automate simple shell tasks with shell scripts.
 
 ## What you will not be after this presentation
 
-TODO: Write that
+After this presentation, you will not be a bash master and your beard won't grow 10 inches and turn gray. Bash is a vast
+subject and this presentation only adresses the surface of it.
 
 ## Just do it!
 
