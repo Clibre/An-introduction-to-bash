@@ -14,7 +14,7 @@ The presentation is divided in four distinct parts:
 ## What you will be after this presentation
 
 After this presentation, you will be able to use bash for simple tasks such as copying, moving or deleting files, creating
-and deleting directories, moving in you file system, etc. You will be able to manipulate text with complex commands like grep,
+and deleting directories, moving in your file system, etc. You will be able to manipulate text with complex commands like grep,
 sed and awk. You will be able to automate simple shell tasks with shell scripts.
 
 ## What you will not be after this presentation
@@ -51,12 +51,3 @@ that I didn't mean to be offensive in any way.
 ---- README.md (what you're reading now)
 
 ---- solutions/ (possible solutions for the exercises)
-
-
-## Credits
-
-TODO: Write credits
-
-## License
-
-TODO: Write license
