@@ -1,9 +1,9 @@
 ## Exercise 1, solution ##
 First, make sure that the "verify.sh" script is executable.
-Second, make sure that there's a "output.txt" file under the
+Second, make sure that there's an "output.txt" file under the
 exercises/awk/ex1/ directory.
 Third, run the script "verify.sh". The script will output something
-depending on wheter or not your answer is right.
+depending on whether or not your answer is right.
 
 ## Solution ##
-The solution will be found in the solution.txt file.
+The solution can be found in the solution.txt file.
