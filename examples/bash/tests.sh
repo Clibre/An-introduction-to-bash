@@ -42,3 +42,5 @@ myNum=23
 [[ $myNum -lt 44 ]] && echo "$myNum is less than 44"
 [[ $myNum -gt 12 ]] && echo "$myNum is greater than 12"
 [[ $myNum -ne 6 ]] && echo "$myNum is not equal to 6"
+
+[[ 0 -eq "lala" ]] && echo "0 is equal to 'lala'"
